@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="keywords" content="html editor, online ide, web development, visual studio code, vscode web, html5, css3, javascript, react, typescript, code playground, realtime preview, frontend developer, web design, coding tool, syntax highlighting, monaco editor, developer tools, js obfuscator, base64 converter, color picker, cdnjs, open source, free ide, programming, coding, web app, pwa, offline capability, responsive design, mobile coding, ipad coding, tablet editor, fast editor, lightweight ide, secure coding, client side, local storage, zip export, project management, file explorer, dark mode, themes, developer utilities, code formatting, lorem ipsum, emmet, intellisense, autocompletion, snippets, web worker, indexeddb, accessibility, aria, semantic html, seo friendly, meta tags, favicon generator, image optimization, performance, debugging, console, element inspector, network tools, resources, libraries, frameworks, bootstrap, tailwind, jquery, vue, angular, svelte, nodejs, python, ruby, php, sql, database, git, version control, terminal, command line, shell, bash, zsh, powershell, docker, kubernetes, aws, azure, google cloud, serverless, jamstack, static site generator, hugo, jekyll, gatsby, nextjs, nuxtjs, remix, astro, vite, webpack, rollup, parcel, babel, eslint, prettier, typescript, sass, less, stylus, postcss, webassembly, wasm, webgl, canvas, svg, audio, video, multimedia, streaming, webrtc, websocket, socketio, graphql, rest api, soap, json, xml, yaml, toml, markdown, latex, asciidoc, mermaid, plantuml, drawio, excalidraw, prototyping, wireframing, ui/ux, user interface, user experience, material design, ant design, chakra ui, mui, semantic ui, foundation, bulma, tachyons, picnic, water, milligram, skeleton, pure, spectre, primer, carbon, fluent, photon, arco, tdesign, element plus, vant, ionic, framework7, onsen ui, quasar, vuetify, buefy, bootstrap-vue, react-bootstrap, reactstrap, semantic-ui-react, antd, material-ui, blueprint, evergreen, grommet, rebass, theme-ui, system-ui, styled-components, emotion, jss, css-in-js, tailwind-css, windicss, unocss, master-css" />
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAIJSURBVFiF7ZaxSxsxHMV/d94dFaxyglM6FAqFDoVCB4VCB4tCh0Kh0KFDodCh0KFDodCh0KFDodCh0KFDodCh0KFDodCh0KFDodCh0K30KBT+B32XQ0JyzF289xR84e79/d7vJbnL3ZO0pC3t/6Z2X0tK0k3/C6Zp+i6iF1EUfWg0Gg+S/gCYz+fXImqY5s/M/CyipwA/AdwD0Ov1zqMo2je/Z+avkp4D+E3SM8y8lPRFRK9FtC9pT9JjADsi8hLAAwBbqvpqmqY7InIG4DcR2QbwFMCmiDwT0X0R+SqpC2BrPB6/VtVXInIG4FBEhgA2VfWNmR9F5ExV34nISwA/VPU1M78RkX0R+crM9yLyFMA2M9+J6ImI7IvIV2a+F5GnADZVtWfmJxHZV9V3zHwvIk8BbInIS2a+F5F9Vf3AzPci8hTApqreM/OjiOyr6gdmvheRpwA2VfWemb9FZF9VPzDzvYg8BbApiuJFVd8z86OqfmDmexF5CmBLRN4z872I7IvIV2a+F5GnADZV9Z6ZH0VkX1U/MPO9iDwFsCkiL5n5XkT2VfUDM9+LyFMAm6r6gZkfRWRfVT8w872IPAWwqaqfmPlRRPZV9QMz34vIUwCbqvqRmR9FZF9VPzDzvYg8BbCpqp+Y+VFE9lX1AzPfi8hTAJt/q/oHAKt/q/4BwOrfqn8AsPq36h8ArP4/1b9S680j2nwAAAAASUVORK5CYII=">
+    <title>Kurdi HTML5 Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/php-wasm@0.0.12/PhpWeb.js" as="script" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/php-wasm@0.0.12/php-web.js" as="script" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/php-wasm@0.0.12/php-web.wasm" as="fetch" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Fira+Code:wght@400;500;700&family=Ubuntu+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --ripple-color: rgba(255, 255, 255, 0.1);
+        --ripple-duration: 0.6s;
+      }
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #181818;
+        color: #cccccc;
+        /* Custom Cursor for Main Page */
+      }
+      
+      /* Modern Scrollbar */
+      ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #424242;
+        border-radius: 5px;
+        border: 2px solid #181818; /* Creates padding effect */
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #4f4f4f;
+      }
+      
+      /* Global Click Effect (Small Red Circle) */
+      .ripple {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        background: rgba(255, 0, 0, 0.8);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        animation: fade-out-anim 0.3s ease-out forwards;
+        z-index: 99999;
+      }
+      @keyframes fade-out-anim {
+        0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+      }
+
+      /* Animations */
+      @keyframes fade-in-up {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .animate-fade-in-up {
+        animation: fade-in-up 0.4s ease-out forwards;
+      }
+
+      .glass-panel {
+        background: rgba(30, 30, 30, 0.85);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      
+      /* Utility for non-selectable text */
+      .no-select {
+        user-select: none;
+        -webkit-user-select: none;
+      }
+
+      /* Pointer/Link Cursor Global Overrides */
+      a, button, [role="button"], input[type="submit"], input[type="button"], select, .pointer, .cursor-pointer, ::-webkit-scrollbar-thumb, summary { 
+          cursor: url('data:image/x-icon;base64,AAACAAEAICAAAAkAAQCoEAAAFgAAACgAAAAgAAAAQAAAAAEAIAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAACAAAAAgAAAAIAAAACAAAAAgAAAAAAAAAAAAAAAQAAAAEAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAABQAAAAkAAAALAAAADQAAAAwAAAAJAAAABwAAAAYAAAAHAAAACQAAAAgAAAAEAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAANAAAAFgAAACoAAAAtAAAALAAAACgAAAAcAAAAEgAAABYAAAAZAAAAIAAAABUAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAACQAAABYAAAAmAAAAqQAAANcAAADXAAAA1wAAANMAAACRAAAAKgAAAHIBAQHLAAAA0AEBAYEAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAcAAAASAAAAIgAAADMEBATVjY2N/8LCwv/CwsL/u7u7/ygoKP8AAACrAQEB+4GBgf9PT0//AgICtwAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAGAAAAEAAAAB8AAAAxAgIChwsLC//k5OT/////////////////6urq/xcXF/5paWn+/////3p6ev8DAwOwAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAABAAAAA4AAAAdAAAALwEBAY8BAQH/w8PD/////////////Pz8///////////////////////7+/v/rq6u/wAAAMoAAAAPAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAKAAAAGQAAACsBAQGBAQEB/8zMzP////////////z8/P9dXV3//////6ampv+JiYn//////4KCgv/39/f/NTU1/wAAAHYAAAAFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAABwAAABQAAAAmAAAAUAEBAf29vb3/////////////////19fX/yMjI///////enp6/1ZWVv//////SkpK/8PDw//v7+//Dg4O/wAAACsAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAUAAAAPAAAAIAAAADABAQHQdHR0/v/////////////////////X19f/IyMj//////96enr/VlZW//////9KSkr/w8PD//////+UlJT/AAAAwQAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAADAAAABoAAAAyAAAAbyMjI//8/Pz//////////////////////9bW1v8nJyf//////3p6ev9WVlb//////0pKSv/Dw8P///////X19f8EBAT1AAAAKwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAgAAAAVAAAAJwAAAEMEBATz1dXV////////////////////////////09PT/yoqKv//////enp6/1ZWVv//////SkpK/8PDw////////////0RERP4AAABGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAADQAAAB4AAABBAAAA246Ojv////////////j4+P+pqan////////////9/f3/aGho//////+lpaX/jo6O//////+EhIT/9/f3////////////ZWVl/wAAAF4AAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAPAAAAIwICApEpKSn+/Pz8////////////U1NT/y4uLv/////////////////9/f3///////////////////////z8/P////////////////99fX3/AAAAcwAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAA4AAAAeAgICr3Jycv///////f39/4aGhv8AAAD/QEBA/////////////////////////////////////////////////////////////////4ODg/8AAABzAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAABwAAABMAAABKCAgI/XJycv8vLy/+AQEB4QAAAJ95eXn///////X19f92dnb///////////+7u7v/paWl////////////qamp/46Ojv//////gYGB/wAAAHIAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAABwAAAA4AAAA9AgICqgICAooAAABFAQEByLe3t///////y8vL/yUlJf/n5+f//////2tra/9AQED+//////////9ZWVn+AgIC/76+vv9BQUH/AAAAVgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAwAAAAYAAAAQAAAAIQAAADwKCgr+2tra//////+UlJT/JiYm/+fn5///////PT09/ikpKf/6+vr//f39/ygoKP8AAACxBQUF4wEBAbMAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAABAAAAAkAAAAbCoqKv/5+fn//////2VlZf8BAQH9XFxc/2hoaP8AAAD+AQEBwBsbG/IcHBzzAgICtQAAAAwAAAAEAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFAAAAFAAAACgBAQGdU1NT/v/////+/v7/ODg4/wAAAHsAAABvAAAAcQAAACsAAAARAAAALQAAACoAAAAnAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAAAAVAAAAMAEBAciMjIz//////+jo6P8ZGRn/AAAANAAAAAMAAAACAAAAAgAAAAEAAAABAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAABUAAAAzAAAA0bOzs///////1tbW/wYGBt8AAAAFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFAAAAEQAAACUAAADLr6+v//////9XV1f/AAAAcwAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAKAAAAFgEBAZMjIyP/UFBQ/gEBAfgAAAAXAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAQAAAAJAAAAEgAAAG8BAQGRAAAAOwAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAIAAAADAAAAAwAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/////////////////////////////////////////////////8DH///AB///gAf//wAH//4AB//+AAP//AAB//wAAf/4AAH/8AAB/+AAAf/gAAH/8AAB//kAAf//AAH//wAP//4P///+D////g////4f///+H////7////////8='), auto; 
+      }
+      
+      /* Ensure text inputs keep text cursor */
+      input[type="text"], input[type="password"], textarea, .monaco-editor, .monaco-editor .view-lines { 
+          cursor: text !important; 
+      }
+    </style>
+<link rel="stylesheet" href="/index.css">
+    <link rel="stylesheet" href="/responsivephone.css">
+</head>
+  <body class="bg-[#181818] text-[#cccccc] overflow-hidden m-0 p-0 h-screen w-screen">
+    <div id="root" class="h-full w-full"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
