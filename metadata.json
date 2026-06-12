@@ -1,0 +1,6 @@
+{
+  "name": "Visual Studio Web",
+  "description": "A powerful, web-based Visual Studio-like IDE for HTML5 development with real-time preview, project management, and zip export capabilities.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

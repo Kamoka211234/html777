@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Project Preview</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.8/babel.min.js"></script>
+    <style>body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #fff; } iframe { width: 100%; height: 100%; border: none; }</style>
+</head>
+<body>
+    <iframe id="app-frame" sandbox="allow-scripts allow-modals allow-popups allow-forms allow-same-origin allow-pointer-lock allow-presentation"></iframe>
+    <script>
+        const FILES = [{"id":"1","name":"style.css","type":"file","parentId":"root","content":"body { color: red; }"},{"id":"2","name":"script.js","type":"file","parentId":"root","content":"console.log(\"hello\");"},{"id":"3","name":"image.svg","type":"file","parentId":"root","content":"<svg></svg>","isBinary":false},{"id":"4","name":"index.html","type":"file","parentId":"root","content":"<!DOCTYPE html><html><head><link rel=\"stylesheet\" href=\"style.css\"><script src=\"script.js\"><\/script></head><body><img src=\"image.svg\"></body></html>"}];
+        let currentFileId = "4";
+        function resolveFile(files,currentFile,pathStr,fileMap){if(!currentFile)return null;let targetPath=pathStr;let currentFolderId=targetPath.startsWith("/")?"root":currentFile.parentId;const parts=targetPath.split("/").filter(p=>p!==""&&p!==".");for(let i=0;i<parts.length;i++){const part=parts[i];if(part===".."){if(currentFolderId==="root"||!currentFolderId){currentFolderId="root"}else{const parent=files.find(f=>f.id===currentFolderId);currentFolderId=parent?parent.parentId:"root"}continue}let item;if(fileMap){item=fileMap.get(`${currentFolderId}:${part}`)}else{item=files.find(f=>f.name===part&&f.parentId===currentFolderId)}if(!item)return null;if(i===parts.length-1)return item;else{if(item.type!=="folder")return null;currentFolderId=item.id}}return null}
+        function transformJs(code){if(!code)return"";let transformed=code.replace(/(^|[\s{};])(window\.)?location\.href\s*=\s*([^;\n]+)(;?)/g,'$1window.parent.postMessage({type:"navigate", path: $3}, "*");$4');transformed=transformed.replace(/(^|[\s{};])(window\.)?location\s*=\s*([^;\n]+)(;?)/g,'$1window.parent.postMessage({type:"navigate", path: $3}, "*");$4');return transformed}
+        function resolveCssUrls(cssContent,currentFile,files,fileMap){if(!cssContent)return"";return cssContent.replace(/url\((['"]?)([^'")]+)\1\)/gi,(match,quote,path)=>{if(path.includes("://")||path.startsWith("//")||path.startsWith("data:"))return match;const file=resolveFile(files,currentFile,path,fileMap);if(file&&file.content){if(file.isBinary){return`url(${quote||'"'}${file.content}${quote||'"'})`}else{let mimeType="text/plain";const lowerName=file.name.toLowerCase();if(lowerName.endsWith(".svg"))mimeType="image/svg+xml";else if(lowerName.endsWith(".json"))mimeType="application/json";else if(lowerName.endsWith(".css"))mimeType="text/css";return`url(${quote||'"'}data:${mimeType};charset=utf-8,${encodeURIComponent(file.content)}${quote||'"'})`}}return match})}
+        window.FILES = FILES;
+        window.resolveFile = resolveFile;
+        window.currentFileId = currentFileId;
+        function bundle(fileId) {
+            const entryFile = FILES.find(f => f.id === fileId);
+            if (!entryFile) return '<h1>404 Not Found</h1>';
+            
+            let html = entryFile.content || '';
+            
+            // TSX Wrapper
+            if (entryFile.name.endsWith('.tsx') || entryFile.name.endsWith('.jsx')) {
+                html = '<!DOCTYPE html><html><head><meta charset="UTF-8" /></head><body><div id="root"></div><script type="text/babel" data-presets="react,typescript">' + entryFile.content + '<\/script></body></html>';
+            } else if (entryFile.name.endsWith('.json')) {
+                html = '<!DOCTYPE html><html><body style="background:#1e1e1e;color:#d4d4d4;font-family:monospace;white-space:pre-wrap;padding:20px;margin:0;">' + entryFile.content + '</body></html>';
+            } else if (entryFile.name.match(/.(ttf|otf|woff|woff2)$/i)) {
+                const fontName = 'PreviewFont_' + entryFile.id.replace(/[^a-zA-Z0-9]/g, '');
+                html = '<!DOCTYPE html><html><head><meta charset="UTF-8" /><style>@font-face { font-family: "' + fontName + '"; src: url(' + entryFile.content + '); } body { background: #1e1e1e; display: flex; flex-direction: column; gap: 24px; padding: 24px; color: white; justify-content: center; align-items: center; min-height: 100vh; margin: 0; font-family: "' + fontName + '", sans-serif; } .card { background: #252526; padding: 24px; border-radius: 8px; border: 1px solid #333; width: 100%; max-width: 800px; } .label { font-family: sans-serif; font-size: 12px; color: #888; text-transform: uppercase; margin-bottom: 8px; } .text { font-size: 36px; word-break: break-all; line-height: 1.5; }</style></head><body><div class="card"><div class="label">English</div><div class="text">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br/>abcdefghijklmnopqrstuvwxyz<br/>0123456789 !@#$%^&*()</div></div><div class="card"><div class="label">Kurdish Sorani</div><div class="text" dir="rtl">بژی کورد و کوردستان</div></div></body></html>';
+            }
+
+            const replaceResource = (path) => { const file = resolveFile(FILES, entryFile, path); return file; };
+            
+            // Inline CSS resolution
+            html = html.replace(/<style([^>]*)>([\s\S]*?)<\/style>/gi, (match, attrs, content) => {
+                const resolvedContent = resolveCssUrls(content, entryFile, FILES);
+                return '<style' + attrs + '>' + resolvedContent + '<\/style>';
+            });
+            
+            // CSS
+            html = html.replace(/<link\s+[^>]*>/gi, (match) => { if (!match.match(/rel=["']stylesheet["']/i)) return match; const hrefMatch = match.match(/href=["'](.+?)["']/i); if (hrefMatch && !hrefMatch[1].includes('://')) { const file = replaceResource(hrefMatch[1]); if (file && file.content) { const cssContent = resolveCssUrls(file.content, file, FILES); return '<style>' + cssContent + '</style>'; } } return match; });
+            
+            // JS/TS
+            html = html.replace(/<script(\s[^>]*)?src=["'](.+?)["']([^>]*)>\s*<\/script>/gi, (match, attrs1, src, attrs2) => { 
+                const a1 = attrs1 || ''; const a2 = attrs2 || '';
+                if (!src.includes('://')) { 
+                    const file = replaceResource(src); 
+                    if (file && file.content) {
+                        const ext = file.name.split('.').pop()?.toLowerCase();
+                        let typeAttr = '';
+                        if (ext === 'ts' || ext === 'tsx' || ext === 'jsx') typeAttr = ' type="text/babel" data-presets="react,typescript"';
+                        return '<script' + a1 + a2 + typeAttr + '>' + transformJs(file.content) + '\n//# sourceURL=' + file.name + '\n<\/script>'; 
+                    }
+                } 
+                return match; 
+            });
+            
+            // Media
+            html = html.replace(/(src|href)=["'](.+?)["']/gi, (match, attr, path) => { 
+                if (!path.includes('://') && !path.startsWith('data:') && !path.startsWith('#') && !path.startsWith('javascript:')) { 
+                    if (attr === 'href' && (path.endsWith('.html') || path.indexOf('.') === -1)) return match; 
+                    const file = resolveFile(FILES, entryFile, path); 
+                    if (file && file.content) {
+                        if (file.isBinary) return attr + '="' + file.content + '"';
+                        else {
+                            let mimeType = 'text/plain';
+                            const lowerName = file.name.toLowerCase();
+                            if (lowerName.endsWith('.svg')) mimeType = 'image/svg+xml';
+                            else if (lowerName.endsWith('.json')) mimeType = 'application/json';
+                            return attr + '="data:' + mimeType + ';charset=utf-8,' + encodeURIComponent(file.content) + '"';
+                        }
+                    } 
+                } 
+                return match; 
+            });
+            
+            // Iframes
+            html = html.replace(/(<iframe[^>]*?\s)src=["']([^"']+)["']/gi, (match, tag, src) => {
+                if (src.includes('://') || src.startsWith('//') || src.startsWith('data:') || src.startsWith('blob:') || src.includes('www.')) return match;
+                const file = replaceResource(src);
+                if (!file || !file.content) return match;
+                const escaped = file.content.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+                return tag + 'srcdoc="' + escaped + '"';
+            });
+            
+            const interceptor = `<script>
+            document.addEventListener('click', e => { const a = e.target.closest('a'); if (a) { const href = a.getAttribute('href'); if (href && !href.startsWith('http') && !href.startsWith('//') && !href.startsWith('#') && !href.startsWith('javascript:')) { e.preventDefault(); window.parent.postMessage({ type: 'navigate', path: href }, '*'); } } });
+            window.open = function(url) { window.parent.postMessage({type:'navigate', path: url}, '*'); return null; };
+            
+            const oldFetch = window.fetch;
+            window.fetch = async function(resource, init) {
+                let urlStr = typeof resource === "string" ? resource : (resource ? resource.url : "");
+                if (urlStr && !urlStr.startsWith("http") && !urlStr.startsWith("data:") && !urlStr.startsWith("blob:")) {
+                    if (urlStr.startsWith("./")) urlStr = urlStr.slice(2);
+                    if (window.parent && window.parent.FILES && window.parent.resolveFile) {
+                        const currentFile = window.parent.FILES.find(f => f.id === window.parent.currentFileId);
+                        const file = window.parent.resolveFile(window.parent.FILES, currentFile, urlStr);
+                        if (file) {
+                            let content = file.content || "";
+                            if (file.name.endsWith(".json")) {
+                                content = content.replace(/[\\u0660-\\u0669\\u06f0-\\u06f9]/g, c => c.charCodeAt(0) & 15);
+                            }
+                            return new Response(content, {
+                                status: 200,
+                                headers: { "Content-Type": file.name.endsWith(".json") ? "application/json" : "text/plain" }
+                            });
+                        }
+                    }
+                    return Promise.reject(new TypeError("Failed to execute 'fetch': Failed to parse URL from " + urlStr));
+                }
+                return oldFetch.apply(this, arguments);
+            };
+            <\/script>`;
+            return html + interceptor;
+        }
+        const frame = document.getElementById("app-frame");
+        if (!currentFileId || !FILES.find(f => f.id === currentFileId)) { const index = FILES.find(f => f.name === "index.html"); if (index) currentFileId = index.id; else { const anyHtml = FILES.find(f => f.name.endsWith(".html")); if(anyHtml) currentFileId = anyHtml.id; } }
+        function navigate(fileId) { currentFileId = fileId; window.currentFileId = fileId; frame.srcdoc = bundle(fileId); }
+        window.addEventListener("message", (e) => { 
+            if (e.data.type === "navigate") { 
+                if (e.data.path.startsWith('http') || e.data.path.startsWith('//')) {
+                    if (window.parent !== window) window.parent.postMessage(e.data, '*');
+                    else window.open(e.data.path, '_blank');
+                    return;
+                }
+                const currentFile = FILES.find(f => f.id === currentFileId); 
+                const nextFile = resolveFile(FILES, currentFile, e.data.path); 
+                if (nextFile) {
+                    navigate(nextFile.id); 
+                } else if (window.parent !== window) {
+                    window.parent.postMessage(e.data, '*');
+                }
+            } else if (window.parent !== window) {
+                // Forward console, logs, error, etc to the Studio editor
+                window.parent.postMessage(e.data, '*');
+            }
+        });
+        if (currentFileId) navigate(currentFileId); else frame.srcdoc = "<h1>No index.html found</h1>";
+    </script>
+</body>
+</html>

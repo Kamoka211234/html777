@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel" data-presets="react,typescript,env">
+        import React from "react";
+        const App = () => <h1>Hello Babel</h1>;
+        export default App;
+        
+        if (typeof exports !== 'undefined' && exports.default) { 
+            const root = ReactDOM.createRoot(document.getElementById('root')); 
+            root.render(React.createElement(exports.default)); 
+        }
+    </script>
+</body>
+</html>
