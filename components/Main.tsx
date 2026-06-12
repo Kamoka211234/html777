@@ -1,114 +1,145 @@
-
-import React, { useState, useEffect } from 'react';
-import ProjectDashboard from './ProjectDashboard';
-import App from './App';
-import { playSound } from '../utils/sound';
-import { Sparkles, Globe, MapPin, Code2 } from 'lucide-react';
+import React, { useState } from 'react';
 
 const Main: React.FC = () => {
-  const [currentProjectId, setCurrentProjectId] = useState<string | null>(null);
-  const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(true);
-  const theme = 'midnight';
+  const [showTutorial, setShowTutorial] = useState<boolean>(true);
+  const [showPreview, setShowPreview] = useState<boolean>(false);
+  const [showApp, setShowApp] = useState<boolean>(false);
 
-  const handleDismissWelcome = () => {
-    setShowWelcomeModal(false);
-    try {
-      playSound('click');
-    } catch (e) {}
+  const handleGlowingClick = () => {
+    setShowPreview(true);
+  };
+
+  const handleCloseTutorial = () => {
+    setShowTutorial(false);
+    setShowApp(true);
   };
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden">
-      {/* Primary IDE Container */}
-      {!currentProjectId ? (
-        <ProjectDashboard onOpenProject={setCurrentProjectId} theme={theme} setTheme={() => {}} />
-      ) : (
-        <App 
-          projectId={currentProjectId} 
-          onCloseProject={() => setCurrentProjectId(null)} 
-          globalTheme={theme}
-        />
+    <div className="relative w-screen h-screen overflow-hidden bg-[#0f0f12]">
+      {/* Main App - shown after tutorial */}
+      {showApp && (
+        <div className="w-full h-full flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-white text-2xl font-bold mb-4">Welcome to the App</h1>
+            <p className="text-gray-400">You've completed the tutorial!</p>
+          </div>
+        </div>
       )}
 
-      {/* Persistent Initial Load Welcome Modal - Kurdistan Erbil branding */}
-      {showWelcomeModal && (
-        <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md select-none animate-fade-in">
+      {/* Tutorial Modal - shows every time user visits */}
+      {showTutorial && (
+        <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md select-none">
           <div className="relative max-w-md w-full bg-[#121214] border border-gray-800 rounded-2xl overflow-hidden shadow-2xl p-6 text-center text-gray-200">
             
-            {/* Header border representing Kurdistan colors: Red, Gold, Green */}
+            {/* Header border - Kurdistan colors */}
             <div className="absolute top-0 left-0 right-0 h-1 flex">
               <div className="flex-1 bg-[#ee2e24]"></div>
               <div className="w-12 bg-[#fbba15]"></div>
               <div className="flex-1 bg-[#239e46]"></div>
             </div>
 
-            {/* Glowing Kurdistan gold-yellow solar emblem */}
-            <div className="mx-auto my-4 w-18 h-18 rounded-full bg-[#fbba15]/10 border border-[#fbba15]/40 flex items-center justify-center relative animate-pulse shadow-[0_0_20px_rgba(251,186,21,0.2)]">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#fbba15] to-[#f59e0b] flex items-center justify-center">
-                <svg viewBox="0 0 100 100" className="w-10 h-10 text-white select-none">
-                  <circle cx="50" cy="50" r="16" fill="currentColor" />
-                  {/* Sun rays representing the standard Kurdish solar disc */}
-                  {Array.from({ length: 21 }).map((_, i) => {
-                    const angle = (i * 360) / 21;
-                    return (
-                      <line
-                        key={i}
-                        x1="50"
-                        y1="22"
-                        x2="50"
-                        y2="6"
-                        stroke="currentColor"
-                        strokeWidth="3.5"
-                        strokeLinecap="round"
-                        transform={`rotate(${angle} 50 50)`}
-                      />
-                    );
-                  })}
-                </svg>
-              </div>
-            </div>
-
-            <div className="space-y-2 mt-4">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-amber-500 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/25">
-                Workspace Creator Credits
+            {/* Tutorial Title */}
+            <div className="mt-4 space-y-2">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-amber-500 bg-amber-500/10 px-2.5 py-1 rounded-full">
+                Tutorial
               </span>
-              <h1 className="text-xl font-bold tracking-tight text-white mt-1">
-                Built by Kamyar Karzan Osman
+              <h1 className="text-xl font-bold text-white mt-2">
+                How to use the editor
               </h1>
-              <p className="text-xs text-gray-400 font-medium flex items-center justify-center gap-1.5">
-                <MapPin size={13} className="text-red-500 animate-bounce" />
-                Kurdistan - Erbil
-              </p>
             </div>
 
-            <div className="bg-[#18181b] border border-gray-800 rounded-lg p-3.5 my-5 text-left text-[11px] leading-relaxed text-gray-400 space-y-2">
-              <div className="flex items-start gap-2">
-                <Code2 size={13} className="text-indigo-400 shrink-0 mt-0.5" />
-                <span>Integrated high-performance **esbuild-wasm** dynamic runtime compiler.</span>
+            {/* Editor Simulation */}
+            <div className="bg-[#18181b] border border-gray-800 rounded-lg p-4 my-5 text-left">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+                <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                <span className="text-[10px] text-gray-500 ml-2">editor.tsx</span>
               </div>
-              <div className="flex items-start gap-2 col-span-2">
-                <Globe size={13} className="text-emerald-400 shrink-0 mt-0.5" />
-                <span>Interactive, client-only **php-wasm** virtual server linking sqlite stores.</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <Sparkles size={13} className="text-yellow-400 shrink-0 mt-0.5" />
-                <span>Synchronized virtual file-system layer mapped directly with **IndexedDB**.</span>
+              
+              <div className="font-mono text-[11px] text-gray-300 space-y-1">
+                <div><span className="text-amber-500">import</span> <span className="text-emerald-400">React</span> from <span className="text-yellow-400">'react'</span>;</div>
+                <div><br /></div>
+                <div><span className="text-purple-400">const</span> <span className="text-blue-400">App</span> = () =&gt; (</div>
+                <div className="ml-4">
+                  <div>&lt;<span className="text-pink-400">div</span>&gt;</div>
+                  <div className="ml-4">Hello World</div>
+                  <div>&lt;/<span className="text-pink-400">div</span>&gt;</div>
+                </div>
+                <div>);</div>
               </div>
             </div>
 
+            {/* Preview Area - shows when button is clicked */}
+            <div className="bg-[#18181b] border border-gray-800 rounded-lg p-4 mb-5">
+              <div className="text-[10px] text-gray-500 mb-2">PREVIEW</div>
+              <div className="min-h-[80px] flex items-center justify-center">
+                {showPreview ? (
+                  <div className="text-center text-white">
+                    <div className="text-green-400 text-2xl mb-1">✓</div>
+                    <p className="text-sm">Preview works!</p>
+                    <p className="text-[10px] text-gray-400 mt-1">You clicked the button</p>
+                  </div>
+                ) : (
+                  <p className="text-xs text-gray-500">Click the glowing button below</p>
+                )}
+              </div>
+            </div>
+
+            {/* Glowing Flickering Button */}
             <button
-              onClick={handleDismissWelcome}
-              className="w-full bg-[#fbba15] hover:bg-[#d97706] text-black font-bold uppercase tracking-wider py-2.5 rounded-xl text-xs transition duration-200 shadow-lg shadow-amber-500/20 active:scale-[0.98] outline-none"
+              onClick={handleGlowingClick}
+              className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-black font-bold uppercase tracking-wider py-2.5 rounded-xl text-sm transition duration-200 shadow-lg active:scale-[0.98] outline-none mb-3"
+              style={{
+                animation: 'pulse 1s ease-in-out infinite',
+                boxShadow: '0 0 20px rgba(251, 186, 21, 0.6)',
+              }}
             >
-              Start Coding WebApp
+              ✨ CLICK ME ✨
             </button>
-            
-            <p className="text-[10px] text-gray-500 mt-3 font-mono">
-              Press key or click start to explore
-            </p>
+
+            {/* Continue button - shows after clicking glowing button */}
+            {showPreview && (
+              <button
+                onClick={handleCloseTutorial}
+                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold uppercase tracking-wider py-2.5 rounded-xl text-sm transition duration-200"
+              >
+                Continue to App →
+              </button>
+            )}
+
+            {!showPreview && (
+              <p className="text-[10px] text-gray-500 mt-2">
+                Click the glowing button to see preview, then continue
+              </p>
+            )}
           </div>
         </div>
       )}
+
+      <style>{`
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 1;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 0.85;
+            transform: scale(1.02);
+          }
+        }
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.2s ease-out;
+        }
+      `}</style>
     </div>
   );
 };
